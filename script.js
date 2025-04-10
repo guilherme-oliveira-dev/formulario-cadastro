@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
         validarFormulario();
     });
 
+    const celularInput = document.getElementById("celular");
+    celularInput.addEventListener("input", function () {
+        let value = celularInput.value.replace(/\D/g, "");
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length >= 2) value = "(" + value.slice(0, 2) + ") " + value.slice(2);
+        if (value.length >= 10) value = value.slice(0, 10) + "-" + value.slice(10);
+        celularInput.value = value;
+    });
+
     document.getElementById("dataNascimento").addEventListener("input", function () {
         verificarMenorIdade(this.value);
     });
@@ -22,15 +31,15 @@ function validarFormulario() {
 
     limparMensagensErro();
 
-    // Validação Telefone Fixo (Formato: (11) 2345-6789)
+    // Validação Telefone Fixo (Formato: (XX) XXXX-XXXX)
     if (!/^\(\d{2}\) \d{4}-\d{4}$/.test(telefoneFixo)) {
         mostrarErro("telefoneFixo", "Formato inválido. Use (XX) XXXX-XXXX.");
         erros++;
     }
 
-    // Validação Celular (Formato: (11) 91234-5678)
-    if (!/^\(\d{2}\) 9\d{4}-\d{4}$/.test(celular)) {
-        mostrarErro("celular", "Formato inválido. Use (XX) 9XXXX-XXXX.");
+    // Validação Celular (aceita fixo ou celular)
+    if (!/^\(\d{2}\)\s?(?:9\d{4}|\d{4})-\d{4}$/.test(celular)) {
+        mostrarErro("celular", "Formato inválido. Use (XX) 9XXXX-XXXX ou (XX) XXXX-XXXX.");
         erros++;
     }
 
@@ -69,7 +78,7 @@ function validarFormulario() {
     if (erros === 0) {
         alert("Cadastro realizado com sucesso!");
         document.getElementById("cadastroForm").reset();
-        document.getElementById("infoMenor").style.display = "none"; // Oculta novamente após envio
+        document.getElementById("infoMenor").style.display = "none";
     }
 }
 
