@@ -1,10 +1,10 @@
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("cadastroForm").addEventListener("submit", function(event) {
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("cadastroForm").addEventListener("submit", function (event) {
         event.preventDefault();
         validarFormulario();
     });
 
-    document.getElementById("dataNascimento").addEventListener("input", function() {
+    document.getElementById("dataNascimento").addEventListener("input", function () {
         verificarMenorIdade(this.value);
     });
 });
@@ -69,6 +69,7 @@ function validarFormulario() {
     if (erros === 0) {
         alert("Cadastro realizado com sucesso!");
         document.getElementById("cadastroForm").reset();
+        document.getElementById("infoMenor").style.display = "none"; // Oculta novamente após envio
     }
 }
 
@@ -102,4 +103,14 @@ function calcularIdade(data) {
         idade--;
     }
     return idade;
+}
+
+function verificarMenorIdade(data) {
+    const idade = calcularIdade(data);
+    const infoMenor = document.getElementById("infoMenor");
+    if (idade < 18) {
+        infoMenor.style.display = "block";
+    } else {
+        infoMenor.style.display = "none";
+    }
 }
